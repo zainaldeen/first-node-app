@@ -1,47 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title><%= pageTitle %></title>
-    <link rel="stylesheet" href="/css/main.css">
+<%- include('./includes/header.ejs') %>
     <link rel="stylesheet" href="/css/product.css">
-
 </head>
 <body>
-<header class="main_header">
-    <nav class="main_header_nav">
-        <ul class="main_header_item-list">
-            <li class="main_header_item"><a class="active" href="/">E-Shop</a></li>
-            <li class="main_header_item"><a href="/admin/add-product">Add Product</a></li>
-        </ul>
-    </nav>
-</header>
-<main>
-    <% if(prods.length > 0) {%>
-    <% for (let i = 0; i < prods.length; ++i) {%>
-        <div class="grid">
-            <article class="card product-item">
-                <header class="card__header">
-                    <h1 class="product__title">Great Book</h1>
-                </header>
-                <div class="card__image">
-                    <img
-                            src="https://res.cloudinary.com/jerrick/image/upload/v1610450296/5ffd857883f7a1001c77a8bf.jpg"
-                            alt="A Book"
-                    >
-                </div>
-                <div class="card__content">
-                    <h2 class="product__price"> 1.99$</h2>
-                    <p class="product__description">Very Important Book To read!</p>
-                </div>
-                <div class="card__actions">
-                    <button class="button">Add To Cart</button>
-                </div>
-
-            </article>
-        </div>
-    <% } %>
-    <% } %>
-</main>
-</body>
-</html>
+    <%- include('./includes/navigation.ejs') %>
+    <main>
+        <% if(prods.length > 0) {%>
+            <div class="grid">
+                <% for (let i = 0; i < prods.length; ++i) { let product = prods[i];%>
+                    <article class="card product-item">
+                        <header class="card__header">
+                            <h1 class="product__title"><%= product.title %></h1>
+                        </header>
+                        <div class="card__image">
+                            <img
+                                    src="https://res.cloudinary.com/jerrick/image/upload/v1610450296/5ffd857883f7a1001c77a8bf.jpg"
+                                    alt="A Book"
+                            >
+                        </div>
+                        <div class="card__content">
+                            <h2 class="product__price"> 1.99$</h2>
+                            <p class="product__description">Very Important Book To read!</p>
+                        </div>
+                        <div class="card__actions">
+                            <button class="button">Add To Cart</button>
+                        </div>
+                    
+                    </article>
+                <% } %>
+            </div>
+    
+        <% } else { %>
+        <h1> NO PRODUCTS FOUND!</h1>
+        <% } %>
+    </main>
+<%- include('./includes/footer.ejs') %>
