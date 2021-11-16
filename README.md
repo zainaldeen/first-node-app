@@ -1,7 +1,7 @@
 # first-node-app
 This App is just a basic web store app helps me to learn more about Nodejs, Express js, EJS, MVC, RestAPi and graphQl
 
-#Installation 
+# Installation 
 1_ Clone this Repo 
 
 2_ run:  npm install 
