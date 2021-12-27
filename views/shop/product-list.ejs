@@ -1,8 +1,8 @@
-<%- include('./includes/header.ejs') %>
+<%- include('../includes/header.ejs') %>
     <link rel="stylesheet" href="/css/product.css">
 </head>
 <body>
-    <%- include('./includes/navigation.ejs') %>
+    <%- include('../includes/navigation.ejs') %>
     <main>
         <% if(prods.length > 0) {%>
             <div class="grid">
@@ -13,13 +13,13 @@
                         </header>
                         <div class="card__image">
                             <img
-                                    src="https://res.cloudinary.com/jerrick/image/upload/v1610450296/5ffd857883f7a1001c77a8bf.jpg"
+                                    src="<%= product.imageUrl %>"
                                     alt="A Book"
                             >
                         </div>
                         <div class="card__content">
-                            <h2 class="product__price"> 1.99$</h2>
-                            <p class="product__description">Very Important Book To read!</p>
+                            <h2 class="product__price"> $<%= product.price %> </h2>
+                            <p class="product__description"><%= product.description %></p>
                         </div>
                         <div class="card__actions">
                             <button class="button">Add To Cart</button>
@@ -33,4 +33,4 @@
         <h1> NO PRODUCTS FOUND!</h1>
         <% } %>
     </main>
-<%- include('./includes/footer.ejs') %>
+<%- include('../includes/footer.ejs') %>
