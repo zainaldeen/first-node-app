@@ -21,9 +21,12 @@
                     <h2 class="product__price"> $<%= product.price %> </h2>
                     <p class="product__description"><%= product.description %></p>
                 </div>
-                <div class="card__actions">
-                    <button class="button">Add To Cart</button>
-                </div>
+                <form class="card__actions" action='/admin/edit-product/<%= product.id %>?edit=1' method="get">
+                    <button class="button">Edit</button>
+                </form>
+                <form class="card__actions" action='/admin/delete-product/<%= product.id %>' method="post">
+                    <button class="delete button">Delete</button>
+                </form>
 
             </article>
             <% } %>
