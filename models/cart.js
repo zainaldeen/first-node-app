@@ -21,6 +21,7 @@ getCartsFromFile = cb => {
 module.exports = class {
 
     static addProductToCart(id, productPrice) {
+        console.log('price'+ productPrice);
         fs.readFile(p, (err, fileContent) => {
             let cart = {products: [], total_price: 0};
             if (!err)
@@ -45,7 +46,6 @@ module.exports = class {
             fs.writeFile(p, data, (err) => {
                 console.log(err);
             })
-            console.log('here!!');
         })
     }
 
