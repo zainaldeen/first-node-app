@@ -16,36 +16,44 @@ exports.getEditProduct = (req, res, next) => {
     {
         return res.redirect('/');
     }
-    Product.show(req.params.id).then(([product, fileData]) => {
-        if (!product)
-        {
-            return res.redirect('/');
-        }
-        res.render(
-            'admin/add-product',
-            {
-                pageTitle: "Edit Product",
-                path: '/admin/edit-product',
-                product: product[0],
-                editing: editMode
-            });
+    req.user.getProducts({where: {id: req.params.id}})
+        .then(product => {
+            if (!product) {
+                return res.redirect('/');
+            }
+            res.render(
+                'admin/add-product',
+                {
+                    pageTitle: "Edit Product",
+                    path: '/admin/edit-product',
+                    product: product[0],
+                    editing: editMode
+                });
     })
 
 };
 
 
-exports.postAddProduct = (req, res, next) => {
+exports.postAddProduct = async (req, res, next) => {
     const title = req.body.title;
     const description = req.body.description;
     const imageUrl = req.body.imageUrl;
     const price = req.body.price;
-    const product = new Product(title, imageUrl, price, description);
-    product.save().then(res.redirect('/products')).catch(err => console.log(err));
+    await req.user.createProduct({
+        title: title,
+        price: price,
+        description: description,
+        imageUrl:imageUrl
+    })
+    .then()
+    .catch(err => console.log(err));
+    res.redirect('/products');
 };
 
 
 exports.getAdminProducts = (req, res, next) => {
-    Product.fetchAll().then(([rows, fileDetails]) => {
+    req.user.getProducts()
+    .then((rows) => {
         res.render(
             'admin/products',
             {
@@ -58,39 +66,29 @@ exports.getAdminProducts = (req, res, next) => {
     });
 };
 
-exports.updateProduct = (req, res, next) => {
+exports.updateProduct = async (req, res, next) => {
     let id = req.params.id;
-
-    let product = {
-        title : req.body.title,
-        imageUrl: req.body.imageUrl,
-        price: req.body.price,
-        description: req.body.description
-    }
-    Product.update(id, product)
-        .then(([rows, fileData])=> {
-        res.render(
-            'admin/products',
-            {
-                pageTitle: "Admin Products",
-                prods: rows,
-                path: '/admin/products'
-            });
+    await Product.findById(id)
+        .then(product => {
+            product.title = req.body.title;
+            product.imageUrl = req.body.imageUrl;
+            product.price = req.body.price;
+            product.description = req.body.description;
+            return product.save();
+        })
+        .then(result => {
+            console.log('Updated Successfully');
         })
         .catch(err => console.log(err));
     res.redirect('/admin/products');
 };
 
-exports.deleteProduct = (req, res, next) => {
+exports.deleteProduct = async (req, res, next) => {
     let id = req.params.id;
-    Product.delete(id).then(([products, fileData]) => {
-        res.render(
-            'admin/products',
-            {
-                pageTitle: "Admin Products",
-                prods: products,
-                path: '/admin/products'
-            });
+    await Product.findById(id)
+       .then(result => {
+           result.destroy();
+           console.log('Deleted Successfully');
     }).catch(err=>console.log(err));
     res.redirect('/admin/products');
 };

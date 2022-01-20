@@ -4,12 +4,9 @@
 <body>
 <%- include('../includes/navigation.ejs') %>
 <main>
-    <div class="right_side">
-        <span><strong>Total Price: </strong> $<%= total_price %></span>
-    </div>
     <% if(prods.length > 0) {%>
         <div class="grid">
-            <% for (let i = 0; i < prods.length; ++i) { let product = prods[i].product;%>
+            <% for (let i = 0; i < prods.length; ++i) { let product = prods[i];%>
             <article class="card product-item">
                 <header class="card__header">
                     <h1 class="product__title"><%= product.title %></h1>
@@ -23,7 +20,7 @@
                 <div class="card__content">
                     <h2 class="product__price"><b>Price: </b>$<%= product.price %> </h2>
                     <p class="product__description"><b>Description:</b> <%= product.description %></p>
-                    <p class="product__qty"> <b>QTY:</b> <%= prods[i].qty %></p>
+                    <p class="product__qty"> <b>QTY:</b> <%= prods[i].cartItem.qty %></p>
                 </div>
                 <div>
                     <form action='/delete-cart/<%= product.id %>' method="post">
