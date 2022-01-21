@@ -10,6 +10,8 @@ const Product  = require('./models/product');
 const User  = require('./models/user');
 const Cart  = require('./models/cart');
 const CartItem = require('./models/cartItem');
+const Order  = require('./models/order');
+const OrderItem = require('./models/orderItem');
 
 const app = express();
 
@@ -41,6 +43,9 @@ Cart.belongsTo(User);
 User.hasOne(Cart);
 Cart.belongsToMany(Product, {through: CartItem});
 Product.belongsToMany(Cart, {through: CartItem});
+User.hasMany(Order);
+Order.belongsToMany(Product, { through: OrderItem });
+Product.belongsToMany(Order, { through: OrderItem });
 
 sequelize
     //.sync({force: true})

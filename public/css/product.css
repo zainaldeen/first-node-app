@@ -125,3 +125,26 @@ button:active{
 .right_side {
     float: right;
 }
+
+.cart-item {
+    border: 1px solid #1bb31b;
+    border-radius: 20px;
+    padding: 1rem;
+    margin: 1rem auto;
+    display: flex;
+    align-content: center;
+    min-width: 80%;
+    position: relative;
+}
+
+.cart-operations {
+    margin: auto;
+    align-content: center;
+
+}
+
+.cart-delete {
+    position: absolute;
+    right: 10px;
+
+}
