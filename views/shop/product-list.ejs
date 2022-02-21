@@ -22,7 +22,7 @@
                             <p class="product__description"><%= product.description %></p>
                         </div>
                         <div class="card__actions">
-                            <form class="card_actions" action="/products/<%= product.id %>">
+                            <form class="card_actions" action="/products/<%= product._id %>">
                                 <button class="button"> Details </button>
                             </form>
                             <%- include('../includes/add-to-cart.ejs', {product: product})%>

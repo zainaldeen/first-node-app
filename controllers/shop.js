@@ -1,6 +1,6 @@
 const Product = require('../models/product');
-const Cart = require('../models/cart');
-const CartItem = require('../models/cartItem');
+// const Cart = require('../models/cart');
+// const CartItem = require('../models/cartItem');
 exports.getIndex= (req, res, next) => {
     res.render(
         'shop/index',
@@ -11,6 +11,7 @@ exports.getIndex= (req, res, next) => {
 };
 
 exports.getProducts = (req, res,next) => {
+    console.log(req.user );
     Product.findAll().then(result => {
         res.render('shop/product-list', {pageTitle: 'Shop', prods: result, path: '/'});
     }).catch(err => {
@@ -20,6 +21,7 @@ exports.getProducts = (req, res,next) => {
 
 
 exports.getProductById = (req, res,next) => {
+    console.log(req);
     let id = req.param('id');
     Product.findById(id).then((result) => {
         res.render('shop/product-card', {pageTitle: 'Product Details', product: result, path: '/'});
@@ -45,34 +47,44 @@ exports.getCartPage = (req, res, next) => {
 
 exports.addToCart = async (req, res, next) => {
     let prodId = req.body.id;
-    let fetchedCart;
-    req.user
-        .getCart()
-        .then(cart => {
-            fetchedCart = cart;
-            return cart.getProducts({ where: {id: prodId}});
-        })
-        .then(products => {
-            let product;
-            let newQty = 1;
-            if (products.length > 0) {
-                product = products[0];
-                // TODO get qty for this products and increase it
-            }
-            if (product){
-                product.cartItem.qty += 1;
-                newQty = product.cartItem.qty;
-            }
-            return Product.findById(prodId)
-                    .then(product => {
-                        fetchedCart.addProduct(product, { through: { qty: newQty}});
-                    })
-                    .catch(err => console.log(err));
-        })
-        .then(() => {
-            res.redirect('/cart');
-        })
-        .catch(err => console.log(err));
+    Product.findById(prodId)
+    .then(product => {
+        return req.user.addToCart(product);
+    })
+    .then(result => {
+        console.log(result);
+    })
+    .catch(err => {
+        console.log(err);
+    })
+    // let fetchedCart;
+    // req.user
+    //     .getCart()
+    //     .then(cart => {
+    //         fetchedCart = cart;
+    //         return cart.getProducts({ where: {id: prodId}});
+    //     })
+    //     .then(products => {
+    //         let product;
+    //         let newQty = 1;
+    //         if (products.length > 0) {
+    //             product = products[0];
+    //             // TODO get qty for this products and increase it
+    //         }
+    //         if (product){
+    //             product.cartItem.qty += 1;
+    //             newQty = product.cartItem.qty;
+    //         }
+    //         return Product.findById(prodId)
+    //                 .then(product => {
+    //                     fetchedCart.addProduct(product, { through: { qty: newQty}});
+    //                 })
+    //                 .catch(err => console.log(err));
+    //     })
+    //     .then(() => {
+    //         res.redirect('/cart');
+    //     })
+    //     .catch(err => console.log(err));
 };
 
 
