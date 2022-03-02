@@ -8,9 +8,9 @@
         <div class="grid">
             <% for (let i = 0; i < prods.length; ++i) { let product = prods[i];%>
             <div class="cart-item">
-                <h1 class="product__title"><%= product.title %></h1>
+                <h1 class="product__title"><%= product.productId.title %></h1>
                 <p class="product__qty"> <b>QTY:</b> <%= product.quantity %></p>
-                <form action='/delete-cart/<%= product._id %>' method="post" class="cart-delete">
+                <form action='/delete-cart/<%= product.productId._id %>' method="post" class="cart-delete">
                     <button class="delete">Delete</button>
                 </form>
             </div>

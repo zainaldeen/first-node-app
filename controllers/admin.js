@@ -40,16 +40,17 @@ exports.postAddProduct = async (req, res, next) => {
     const description = req.body.description;
     const imageUrl = req.body.imageUrl;
     const price = req.body.price;
-    let product = new Product(title, description, imageUrl, price, null, req.user._id);
+    let product = new Product({title: title, description:description, imageUrl:imageUrl, price:price, userId: req.user});
     product.save()
-    .then()
+    .then(() => {
+        res.redirect('/products');
+    })
     .catch(err => console.log(err));
-    res.redirect('/products');
 };
 
 
 exports.getAdminProducts = (req, res, next) => {
-    Product.findAll()
+    Product.find()
     .then((rows) => {
         res.render(
             'admin/products',
@@ -64,18 +65,23 @@ exports.getAdminProducts = (req, res, next) => {
 };
 
 exports.updateProduct = (req, res, next) => {
-    const product = new Product(req.body.title, req.body.price, req.body.description, req.body.imageUrl, req.params.id);
-    product.save()
-        .then(() => {
-            console.log('Updated Successfully');
-            res.redirect('/admin/products');
-        })
-        .catch(err => console.log(err));
+    Product.findById(req.params.id).then(product => {
+        product.title = req.body.title;
+        product.price = req.body.price;
+        product.description = req.body.description;
+        product.imageUrl = req.body.imageUrl
+        return product.save();
+    })
+    .then(result  => {
+        console.log('Updated Successfully');
+        res.redirect('/admin/products');
+    })
+    .catch(err => console.log(err));
 };
 
 exports.deleteProduct = async (req, res, next) => {
     let id = req.params.id;
-    await Product.deleteById(id)
+    await Product.findByIdAndRemove(id)
        .then(() => {
            res.redirect('/admin/products');
     }).catch(err=>console.log(err));

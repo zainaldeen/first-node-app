@@ -2,19 +2,12 @@ const http = require('http');
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const adminRouter = require('./routes/admin');
 const shopRouter = require('./routes/shop');
 const errorController = require('./controllers/errors');
-const { mongoConnect } = require('./utils/database');
-
-// For MySql Version
-// const sequelize = require('./utils/database');
-// const Product  = require('./models/product');
 const User  = require('./models/user');
-// const Cart  = require('./models/cart');
-// const CartItem = require('./models/cartItem');
-// const Order  = require('./models/order');
-// const OrderItem = require('./models/orderItem');
+
 
 const app = express();
 
@@ -26,22 +19,12 @@ app.use(bodyParser.urlencoded({ extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-    User.findById("620d95aa644419a2e0c0b1cb")
+    User.findById("621d5b29b0b8caa5cfa6d624")
         .then(user => {
-            req.user = new User(user.name, user.email, user.password, user.cart, user._id);
+            req.user = user;
             next();
         })
 });
-
-
-// For MySql Version
-// app.use((req, res, next) => {
-//     User.findById(1)
-//         .then(user => {
-//             req.user = user;
-//             next();
-//         })
-// });
 
 // Admin Routes
 app.use('/admin', adminRouter);
@@ -50,8 +33,20 @@ app.use(shopRouter);
 
 app.use(errorController.get404);
 
-mongoConnect(() => {
-    app.listen(3000);
+mongoose.connect('mongodb+srv://root:root@trainingapp.crp6h.mongodb.net/node-store?authSource=admin&replicaSet=atlas-azjdlh-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true')
+.then(() => {
+    User.findOne().then(user => {
+        if (!user) {
+            let name = 'Zain';
+            let email = 'zainaldeenfayod@gmail.com';
+            let cart = {items:[]};
+            let user = new User({ name: name, email: email, cart:cart});
+            user.save();
+        }
+        app.listen(3000);
+    })
+}).catch((err) => {``
+    console.log(err);
 })
 
 
