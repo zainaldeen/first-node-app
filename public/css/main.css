@@ -16,7 +16,10 @@ main{
 }
 .main_header_nav{
     height: 100%;
+    width: 100%;
     display: flex;
+    gap: 4em;
+    justify-content: space-between;
     align-items: center;
 }
 .main_header_item-list{
