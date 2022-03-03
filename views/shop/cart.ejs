@@ -11,7 +11,7 @@
                 <h1 class="product__title"><%= product.productId.title %></h1>
                 <p class="product__qty"> <b>QTY:</b> <%= product.quantity %></p>
                 <form action='/delete-cart/<%= product.productId._id %>' method="post" class="cart-delete">
-                    <button class="delete">Delete</button>
+                    <button class="custom_button delete">Delete</button>
                 </form>
             </div>
             <% } %>
@@ -19,7 +19,7 @@
 
         <div class="grid">
             <form action='/submit-cart' method='post' class="cart-operations">
-                <button> Submit Order </button>
+                <button class="custom_button"> Submit Order </button>
             </form>
         </div>
     <% } else { %>

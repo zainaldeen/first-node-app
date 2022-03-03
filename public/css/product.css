@@ -31,7 +31,7 @@
     padding: 1rem;
 }
 
-button{
+.custom_button{
     font: inherit;
     border: 1px solid #ffffff;
     background-color: #85ff85;
@@ -43,8 +43,9 @@ button{
 
 }
 
-button:hover,
-button:active{
+
+.custom_button:hover,
+.custom_button:active{
     background-color: white;
     color: #85ff85;
     border: 1px solid #85ff85;

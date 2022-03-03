@@ -23,15 +23,15 @@
                         </div>
                         <div class="card__actions">
                             <form class="card_actions" action="/products/<%= product._id %>">
-                                <button class="button"> Details </button>
+                                <button  class="custom_button button"> Details </button>
                             </form>
                             <%- include('../includes/add-to-cart.ejs', {product: product})%>
                         </div>
-                    
+
                     </article>
                 <% } %>
             </div>
-    
+
         <% } else { %>
         <h1> NO PRODUCTS FOUND!</h1>
         <% } %>
