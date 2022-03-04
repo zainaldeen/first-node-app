@@ -1,5 +1,12 @@
 const User = require('../models/user');
 const  bcrypt = require('bcryptjs');
+const mailgun = require("mailgun-js");
+
+const DOMAIN = "sandbox825499341a0d4159843ce35bcabdde67.mailgun.org";
+const mg = mailgun({
+    apiKey: "bfc6d8f74e6054ea3f48463689a4e60c-e2e3d8ec-cecb36ce",
+    domain: DOMAIN}
+);
 
 exports.getLogin = (req, res, next) => {
     let message = req.flash('error');
@@ -35,7 +42,7 @@ exports.postLogin = (req, res, next) => {
                             res.redirect('/');
                         })
                     }
-                    req.flash('error', 'Invalid Email or Password');    
+                    req.flash('error', 'Invalid Email or Password');
                     return res.redirect('/login');
                 })
                 .catch(err => {
@@ -71,23 +78,38 @@ exports.postSignup = (req, res, next) => {
         req.flash('error', 'Password and its confirmation doesn\'t match' );
         return res.redirect('/signup');
     }
-    User.findOne({email: email})
+    User
+        .findOne({email: email})
         .then(userDoc => {
             if (userDoc) {
                 return res.redirect('/signup');
             }
-            return bcrypt.hash(password, 12).then(hashedPassword => {
-                const user = new User({
-                    name: name,
-                    email: email,
-                    password: hashedPassword,
-                    cart: {items: []}
+            return bcrypt
+                .hash(password, 12)
+                .then(hashedPassword => {
+                    const user = new User({
+                        name: name,
+                        email: email,
+                        password: hashedPassword,
+                        cart: {items: []}
+                    })
+                    return user.save();
                 })
-                return user.save();
-            })
-        })
-        .then(result => {
-            return res.redirect('/login');
+                .then(result => {
+                    res.redirect('/login');
+                    const data = {
+                        from: "Mailgun Sandbox <postmaster@sandbox825499341a0d4159843ce35bcabdde67.mailgun.org>",
+                        to: email,
+                        subject: 'You Registration is Completed Successfully',
+                        html: '<h1>Welcome To Our open source store :) !</h1>'
+                    };
+                    return mg.messages().send(data, function (error, body) {
+                        console.log(body);
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                })
         })
         .catch(err => {
             console.log(err);
