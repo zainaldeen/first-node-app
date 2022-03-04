@@ -4,18 +4,24 @@
 <body>
 <%- include('../includes/navigation.ejs') %>
 <main>
-    <form class="product-form" action="/login" method="POST">
-        <h1 style="color: #807b7b"> Login </h1>
+    <form class="product-form" action="/signup" method="POST">
+        <h1 style="color: #807b7b"> Signup </h1>
 
         <div class="form-content">
+            <label for="name">Name</label>
+            <input type="text" name="name" placeholder="Your name" id="name" >
+
             <label for="email">Email</label>
             <input type="text" name="email" placeholder="example@example.com" id="email" >
 
             <label for="password">Password</label>
             <input type="password" name="password" id="password" >
 
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" name="confirmPassword" id="confirmPassword" >
+
         </div>
-        <button class="custom_button" type="submit">Login</button>
+        <button class="custom_button" type="submit">Signup</button>
     </form>
 </main>
 <%- include('../includes/footer.ejs') %>
