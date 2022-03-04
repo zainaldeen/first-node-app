@@ -4,11 +4,13 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBConnect = require('connect-mongodb-session')(session);
+const csrf = require('csurf');
+const flash = require('connect-flash');
 
 
 const errorController = require('./controllers/errors');
 const User  = require('./models/user');
-
+const csrfProtection = csrf({});
 
 const MONGODB_URI = 'mongodb+srv://root:root@trainingapp.crp6h.mongodb.net/node-store?authSource=admin&replicaSet=atlas-azjdlh-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true';
 
@@ -18,7 +20,6 @@ const store = new MongoDBConnect({
     uri: MONGODB_URI,
     collection: 'sessions'
 })
-
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
@@ -28,6 +29,7 @@ const authRouter = require('./routes/auth');
 
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(
     session({
         secret: 'Zain Aldeen Fayod Secret!!',
@@ -36,6 +38,9 @@ app.use(
         store: store
     })
 );
+app.use(flash())
+app.use(csrfProtection);
+
 app.use((req, res, next) => {
    if (!req.session.user) {
        return next()
@@ -48,6 +53,12 @@ app.use((req, res, next) => {
        .catch(err => {
            console.log(err);
        })
+});
+
+app.use((req, res, next) => {
+   res.locals.isAuthenticated = req.session.isLoggedIn;
+   res.locals.csrfToken = req.csrfToken();
+   next();
 });
 
 app.use('/admin', adminRouter);

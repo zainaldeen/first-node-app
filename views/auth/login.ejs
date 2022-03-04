@@ -1,9 +1,15 @@
 <%- include('../includes/header.ejs') %>
 <link rel="stylesheet" href="/css/product.css">
+<link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 <%- include('../includes/navigation.ejs') %>
 <main>
+    <% if (errorMessage) { %>
+        <div style="margin-bottom: 20px;" class="user-message user-message--error">
+            <%= errorMessage %>
+        </div>
+    <%}%>
     <form class="product-form" action="/login" method="POST">
         <h1 style="color: #807b7b"> Login </h1>
 
@@ -15,6 +21,8 @@
             <input type="password" name="password" id="password" >
 
         </div>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
         <button class="custom_button" type="submit">Login</button>
     </form>
 </main>

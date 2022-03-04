@@ -54,7 +54,6 @@ exports.postAddProduct = async (req, res, next) => {
 
 
 exports.getAdminProducts = (req, res, next) => {
-    let isLoggedIn = req.session.isLoggedIn;
     Product.find()
     .then((rows) => {
         res.render(
@@ -63,7 +62,6 @@ exports.getAdminProducts = (req, res, next) => {
                 pageTitle: "Admin Products",
                 prods: rows,
                 path: '/admin/products',
-                isAuthenticated: isLoggedIn
             });
     }).catch(err => {
         console.log(err);

@@ -18,9 +18,11 @@
                 <label for="description">Description</label>
                 <textarea name="description" id="description" rows="5"> <% if (editing) { %><%= product.description%><% } %> </textarea>
 
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 
             </div>
             <% if (editing) { %> <button class="custom_button" type="submit">Edit Product</button> <% } else { %>
+
             <button class="custom_button" type="submit">Add Product</button> <% }%>
         </form>
     </main>

@@ -22,9 +22,11 @@
                     <p class="product__description"><%= product.description %></p>
                 </div>
                 <form class="card__actions" action="/admin/edit-product/<%= product._id %>?edit=true" method="get">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <button class="custom_button button">Edit</button>
                 </form>
                 <form class="card__actions" action='/admin/delete-product/<%= product._id %>' method="post">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <button class="custom_button delete button">Delete</button>
                 </form>
 

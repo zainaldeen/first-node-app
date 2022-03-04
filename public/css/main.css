@@ -68,3 +68,21 @@ main{
     text-align: center;
     margin: 1rem 3rem;
 }
+
+.user-message {
+    margin: auto;
+    width: 45%;
+    padding: 1rem;
+    border-radius: 10px;
+    border: 1px solid #85fbff;
+    background-color: #bdfaff;
+    text-align: center;
+}
+
+
+.user-message {
+
+    border: 1px solid rgba(229, 21, 30, 0.75);
+    background-color: rgba(255, 137, 143, 0.78);
+    text-align: center;
+}

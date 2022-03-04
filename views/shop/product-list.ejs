@@ -23,6 +23,7 @@
                         </div>
                         <div class="card__actions">
                             <form class="card_actions" action="/products/<%= product._id %>">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                 <button  class="custom_button button"> Details </button>
                             </form>
                             <%- include('../includes/add-to-cart.ejs', {product: product})%>
