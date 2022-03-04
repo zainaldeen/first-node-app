@@ -1,9 +1,16 @@
 <%- include('../includes/header.ejs') %>
 <link rel="stylesheet" href="/css/product.css">
+<link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 <%- include('../includes/navigation.ejs') %>
 <main>
+    <% if (errorMessage) { %>
+        <div style="margin-bottom: 20px;" class="user-message user-message--error">
+            <%= errorMessage %>
+        </div>
+
+    <%}%>
     <form class="product-form" action="/signup" method="POST">
         <h1 style="color: #807b7b"> Signup </h1>
 

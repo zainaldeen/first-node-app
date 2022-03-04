@@ -32,10 +32,10 @@ exports.postLogin = (req, res, next) => {
                         req.session.isLoggedIn = true;
                         req.session.user = user;
                         return req.session.save(err => {
-                            console.log(err);
                             res.redirect('/');
                         })
                     }
+                    req.flash('error', 'Invalid Email or Password');    
                     return res.redirect('/login');
                 })
                 .catch(err => {
@@ -48,19 +48,29 @@ exports.postLogin = (req, res, next) => {
         })
 }
 exports.getSignup= (req, res, next) => {
+    let message = req.flash('error');
+    if (message.length > 0) {
+        message = message[0];
+    } else {
+        message = null;
+    }
     res.render('auth/signup',
         {
             pageTitle: "Signup",
             path: '/signup',
-            isAuthenticated: false
+            isAuthenticated: false,
+            errorMessage: message
         },
 )}
 exports.postSignup = (req, res, next) => {
-    console.log('in controller ');
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
-    // const confirmPassword = req.body.confirmPassword;
+    const confirmPassword = req.body.confirmPassword;
+    if (password !== confirmPassword) {
+        req.flash('error', 'Password and its confirmation doesn\'t match' );
+        return res.redirect('/signup');
+    }
     User.findOne({email: email})
         .then(userDoc => {
             if (userDoc) {
