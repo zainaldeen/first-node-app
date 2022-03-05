@@ -11,21 +11,16 @@
         </div>
 
     <%}%>
-    <form class="product-form" action="/login" method="POST">
-        <h1 style="color: #807b7b"> Login </h1>
+    <form class="product-form" action="/reset" method="POST">
+        <h1 style="color: #807b7b"> Reset Password </h1>
 
         <div class="form-content">
             <label for="email">Email</label>
             <input type="text" name="email" placeholder="example@example.com" id="email" >
-
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" >
-
         </div>
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 
-        <button class="custom_button" type="submit">Login</button>
-        <a href="/reset"> Forget Password </a>
+        <button class="custom_button" type="submit">Reset Your Password</button>
     </form>
 </main>
 <%- include('../includes/footer.ejs') %>
